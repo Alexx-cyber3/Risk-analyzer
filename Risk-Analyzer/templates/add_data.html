@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="card form-card">
+    <h3>Add New Identity Record</h3>
+    <form action="{{ url_for('add_data') }}" method="POST">
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required placeholder="e.g. John Doe">
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required placeholder="e.g. john@example.com">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required placeholder="e.g. +1234567890">
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required placeholder="e.g. jdoe123">
+        </div>
+        <div class="form-group">
+            <label for="platform">Platform</label>
+            <input type="text" id="platform" name="platform" required placeholder="e.g. Facebook, Gmail, Netflix">
+        </div>
+        <div class="form-group">
+            <label for="password_strength">Password Strength (Simulated)</label>
+            <select id="password_strength" name="password_strength">
+                <option value="Strong">Strong</option>
+                <option value="Medium">Medium</option>
+                <option value="Weak">Weak</option>
+            </select>
+        </div>
+        <button type="submit" class="btn primary-btn">Add Record</button>
+    </form>
+</div>
+{% endblock %}

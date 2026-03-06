@@ -1,0 +1,11 @@
+Name,Email,Phone,Username,Platform,PasswordStrength
+John Smith,john.smith@gmail.com,555-0199,jsmith88,Facebook,Strong
+John Smith,john.smith@gmail.com,555-0199,jsmith88,Instagram,Medium
+John Smith,john.smith@gmail.com,555-0199,jsmith_watcher,Netflix,Weak
+John Smith,john.smith@gmail.com,555-0199,john-smith-pro,LinkedIn,Strong
+John Smith,john.smith@gmail.com,555-0199,jsmith88,Spotify,Weak
+Jane Doe,jane.doe@outlook.com,555-0200,janedoe,Twitter,Strong
+Jane Doe,jane.doe@outlook.com,555-0200,janedoe,TikTok,Medium
+Bob Wilson,bob.wilson@email.com,555-0300,bwilson,Amazon,Strong
+Alice Wonderland,alice@wonder.com,555-0400,alice_w,Pinterest,Strong
+Charlie Brown,charlie@peanuts.com,555-0500,cbrown,Reddit,Medium

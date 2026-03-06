@@ -1,0 +1,134 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <!-- Key Metrics Cards -->
+    <div class="card metric-card risk-{{ risks.risk_level|lower }}">
+        <h3>Risk Level</h3>
+        <div class="metric-value">{{ risks.risk_level }}</div>
+        <p>Score: {{ risks.risk_score }}/100</p>
+    </div>
+    <div class="card metric-card">
+        <h3>Total Platforms</h3>
+        <div class="metric-value">{{ risks.total_platforms }}</div>
+        <p>Active Digital Footprint</p>
+    </div>
+    <div class="card metric-card">
+        <h3>Fragmentation Score</h3>
+        <div class="metric-value">{{ risks.fragmentation_score }}%</div>
+        <p>Identity Spread</p>
+    </div>
+    <div class="card metric-card">
+        <h3>Duplication Ratio</h3>
+        <div class="metric-value">{{ risks.duplication_ratio }}</div>
+        <p>Attribute Reuse</p>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="card chart-card">
+        <h3>Platform Distribution</h3>
+        <canvas id="platformChart"></canvas>
+    </div>
+    <div class="card chart-card">
+        <h3>Password Strength Analysis</h3>
+        <canvas id="passwordChart"></canvas>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="card full-width">
+        <h3>Security Recommendations</h3>
+        {% if risks.recommendations %}
+            <ul class="recommendation-list">
+                {% for rec in risks.recommendations %}
+                    <li class="warning-item">{{ rec }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="good-status">No critical risks detected. Maintain good hygiene!</p>
+        {% endif %}
+    </div>
+
+    <!-- Recent Data Table -->
+    <div class="card full-width">
+        <h3>Recent Identity Entries</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Platform</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Password Strength</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in recent_entries %}
+                    <tr>
+                        <td>{{ entry.Platform }}</td>
+                        <td>{{ entry.Username }}</td>
+                        <td>{{ entry.Email }}</td>
+                        <td>{{ entry.Phone }}</td>
+                        <td><span class="badge {{ entry.PasswordStrength|lower }}">{{ entry.PasswordStrength }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data from Flask
+    const chartData = {{ chart_data | tojson }};
+
+    // Platform Chart
+    if (chartData.platforms && chartData.platforms.length > 0) {
+        const ctx1 = document.getElementById('platformChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: chartData.platforms,
+                datasets: [{
+                    label: 'Platforms',
+                    data: chartData.platform_counts,
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+                    ]
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // Password Chart
+        const ctx2 = document.getElementById('passwordChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: chartData.password_labels,
+                datasets: [{
+                    label: 'Count',
+                    data: chartData.password_values,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(75, 192, 192, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}
